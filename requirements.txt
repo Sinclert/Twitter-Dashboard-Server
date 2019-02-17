@@ -1,0 +1,3 @@
+# Package requirements
+
+Flask ~= 1.0
