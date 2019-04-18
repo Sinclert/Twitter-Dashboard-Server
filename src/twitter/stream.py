@@ -9,7 +9,7 @@ from tweepy import StreamListener
 from tweepy import Stream
 from tweepy import TweepError
 
-from twitter.credentials import *
+from twitter.secrets import *
 
 from utils import clean_text
 

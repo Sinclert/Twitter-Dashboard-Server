@@ -1,5 +1,5 @@
-# Credentials files
-**/credentials.py
+# Secret files
+**/secrets.py
 
 # Compiled Python files
 **/*.pyc
