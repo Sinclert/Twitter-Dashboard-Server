@@ -7,14 +7,13 @@ TOKEN_SECRETS = {}
 
 
 
-def build_key(account, token):
+def build_key(account: str, token: str) -> str:
 
 	""" Builds a hash key given a Twitter account and token
 
-	:param account: (str) Twitter account
-	:param token: (str) Twitter token
+	:param account: Twitter account
+	:param token: Twitter token
 
-	:return: (str)
 	"""
 
 	return account + "_" + token
@@ -22,13 +21,14 @@ def build_key(account, token):
 
 
 
-def set_token_secret(account, token, secret):
+def set_token_secret(account: str, token: str, secret: str) -> None:
 
 	""" Saves a token secret given a pair account-token
 
-	:param account: (str) Twitter account
-	:param token: (str) Twitter token
-	:param secret: (str) Twitter secret
+	:param account: Twitter account
+	:param token: Twitter token
+	:param secret: Twitter token secret
+
 	"""
 
 	key = build_key(account, token)
@@ -37,14 +37,13 @@ def set_token_secret(account, token, secret):
 
 
 
-def get_token_secret(account, token):
+def get_token_secret(account: str, token: str) -> str:
 
 	""" Retrieves a token secret given a pair account-token
 
-	:param account: (str) Twitter account
-	:param token: (str) Twitter token
+	:param account: Twitter account
+	:param token: Twitter token
 
-	:return: (str)
 	"""
 
 	key = build_key(account, token)
