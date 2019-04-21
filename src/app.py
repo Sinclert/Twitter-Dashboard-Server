@@ -5,6 +5,8 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 
+from handlers.tokens import set_token_secret
+
 from twitter.auth import get_oauth_handler
 
 
@@ -41,41 +43,22 @@ def get_auth_token():
 	    'oauth_token_secret': oauth_verifier
 	}
 
-	# Obtaining authentication token
+	# Obtaining authentication account and token
 	token, token_secret = oauth_handler.get_access_token(oauth_verifier)
+	account = oauth_handler.get_username()
+
+	# Saving the token secret for future usage
+	set_token_secret(account, token, token_secret)
+
 	return jsonify({
-		'twitter_account': '',
+		'twitter_account': account,
 		'twitter_token': token
 	})
 
 
 
 
-@app.route('/tweets')
-def get_tweets():
-	return jsonify([])
-
-
-@app.route('/tweets/location')
-def get_tweets_location():
-	return jsonify([])
-
-
-@app.route('/tweets/platform')
-def get_tweets_platform():
-	return jsonify([])
-
-
-@app.route('/tweets/sentiment')
-def get_tweets_sentiment():
-	return jsonify([])
-
-
-
-
 if __name__ == '__main__':
-
-
 
 	app.run(
 		host='127.0.0.1',
