@@ -1,5 +1,5 @@
 # Secret files
-**/secrets.py
+src/twitter/secrets.py
 
 # Compiled Python files
 **/*.pyc
