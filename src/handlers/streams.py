@@ -1,47 +1,65 @@
 # -*- coding: utf-8 -*-
 
-
-# Global list of all Twitter streams
-TWITTER_STREAMS = {}
+from utils.singleton import Singleton
 
 
 
 
-def build_key(account: str) -> str:
+class StreamsHandler(metaclass=Singleton):
 
-	""" Builds a hash key given a Twitter account
-
-	:param account: Twitter account
-
-	"""
-
-	return account
+	""" Represents a streams handler object """
 
 
+	def __init__(self):
 
+		""" Creates a streams handler singleton """
 
-def set_twitter_stream(account: str, stream: object) -> None:
-
-	""" Saves a Twitter stream given a pair account-token
-
-	:param account: Twitter account
-	:param stream: Twitter stream object
-
-	"""
-
-	key = build_key(account)
-	TWITTER_STREAMS[key] = stream
+		self.streams = {}
 
 
 
 
-def get_twitter_stream(account: str) -> object:
+	@staticmethod
+	def build_key(account: str) -> str:
 
-	""" Retrieves a Twitter stream given a pair account-token
+		"""
+		Builds a hash key given a Twitter account
 
-	:param account: Twitter account
+		:param account: Twitter account
+		"""
 
-	"""
+		return account
 
-	key = build_key(account)
-	return TWITTER_STREAMS.get(key)
+
+
+
+	def set(self, account: str, stream: object) -> None:
+
+		"""
+		Saves a Twitter stream given a pair account-token
+
+		:param account: Twitter account
+		:param stream: Twitter stream object
+		"""
+
+		key = self.build_key(account)
+
+		# Stopping previous stream in case it existed
+		if key in self.streams:
+			self.streams[key].stop_stream()
+
+		self.streams[key] = stream
+
+
+
+
+	def get(self, account: str) -> object:
+
+		"""
+		Retrieves a Twitter stream given a pair account-token
+
+		:param account: Twitter account
+		"""
+
+		key = self.build_key(account)
+		return self.streams.get(key)

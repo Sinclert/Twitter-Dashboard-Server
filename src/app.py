@@ -5,9 +5,8 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 
-from handlers.secrets import get_token_secret
-from handlers.secrets import set_token_secret
-from handlers.streams import set_twitter_stream
+from handlers.secrets import SecretsHandler
+from handlers.streams import StreamsHandler
 
 from twitter.auth import get_oauth_handler
 from twitter.stream import TwitterStream
@@ -15,6 +14,9 @@ from twitter.stream import TwitterStream
 
 app = Flask('Twitter-Dashboards')
 CORS(app)
+
+secrets = SecretsHandler()
+streams = StreamsHandler()
 
 
 
@@ -51,7 +53,7 @@ def get_auth_token():
 	account = oauth_handler.get_username()
 
 	# Saving the token secret for future usage
-	set_token_secret(account, token, token_secret)
+	secrets.set(account, token, token_secret)
 
 	return jsonify({
 		'twitter_account': account,
@@ -69,11 +71,11 @@ def set_stream():
 	token = request.json['twitter_token']
 
 	# Retrieving token secret previously saved
-	token_secret = get_token_secret(account, token)
+	token_secret = secrets.get(account, token)
 
 	# Saving the stream for future use
 	stream = TwitterStream(token, token_secret)
-	set_twitter_stream(account, stream)
+	streams.set(account, stream)
 
 	stream.start_stream(
 		queries=['Trump'],

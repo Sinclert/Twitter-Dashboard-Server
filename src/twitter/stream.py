@@ -14,15 +14,13 @@ class TwitterStream(StreamListener):
 	""" Represents a Twitter Streaming object """
 
 
-
-
 	def __init__(self, token_key: str, token_secret: str) -> None:
 
-		""" Creates a Twitter listener object
+		"""
+		Creates a Twitter listener object
 
 		:param token_key: Twitter token
 		:param token_secret: Twitter token secret
-
 		"""
 
 		super().__init__()
@@ -42,10 +40,10 @@ class TwitterStream(StreamListener):
 	@staticmethod
 	def get_text(tweet: object) -> str:
 
-		""" Extracts the lowercase text from a Status object (tweet)
+		"""
+		Extracts the lowercase text from a Status object (tweet)
 
 		:param tweet: Tweet object
-
 		"""
 
 		if hasattr(tweet, 'retweeted_status'):
@@ -63,7 +61,8 @@ class TwitterStream(StreamListener):
 
 	def start_stream(self, queries: list, langs: list, coords: list) -> None:
 
-		""" Starts the Twitter stream
+		"""
+		Starts the Twitter stream
 
 		:param queries: filter words
 		:param langs: filter languages
@@ -72,7 +71,6 @@ class TwitterStream(StreamListener):
 			2. South-West latitude
 			3. North-East longitude
 			4. North-East latitude
-
 		"""
 
 		self.stream = Stream(
@@ -91,7 +89,7 @@ class TwitterStream(StreamListener):
 
 
 
-	def finish_stream(self) -> None:
+	def stop_stream(self) -> None:
 
 		""" Closes the Twitter stream """
 
@@ -103,10 +101,10 @@ class TwitterStream(StreamListener):
 
 	def on_status(self, tweet: object) -> None:
 
-		""" Process received tweet
+		"""
+		Process received tweet
 
 		:param tweet: Tweet object
-
 		"""
 
 		tweet_text = self.get_text(tweet)
@@ -120,17 +118,17 @@ class TwitterStream(StreamListener):
 		""" Finish stream due to the timeout exception """
 
 		print('Timeout exception due to lack of data')
-		self.finish_stream()
+		self.stop_stream()
 
 
 
 
 	def on_error(self, code: int) -> None:
 
-		""" Error listener which prints error code
+		"""
+		Error listener which prints error code
 
 		:param code: Stream error code
-
 		"""
 
 		exit('Twitter stream error: ' + str(code))

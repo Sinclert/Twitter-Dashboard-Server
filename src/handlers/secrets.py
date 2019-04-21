@@ -1,50 +1,63 @@
 # -*- coding: utf-8 -*-
 
-
-# Global list of all token secrets
-TOKEN_SECRETS = {}
+from utils.singleton import Singleton
 
 
 
 
-def build_key(account: str, token: str) -> str:
+class SecretsHandler(metaclass=Singleton):
 
-	""" Builds a hash key given a Twitter account and token
-
-	:param account: Twitter account
-	:param token: Twitter token
-
-	"""
-
-	return account + "_" + token
+	""" Represents a token secrets handler object """
 
 
+	def __init__(self):
 
+		""" Creates a token secrets handler singleton """
 
-def set_token_secret(account: str, token: str, secret: str) -> None:
-
-	""" Saves a token secret given a pair account-token
-
-	:param account: Twitter account
-	:param token: Twitter token
-	:param secret: Twitter token secret
-
-	"""
-
-	key = build_key(account, token)
-	TOKEN_SECRETS[key] = secret
+		self.token_secrets = {}
 
 
 
 
-def get_token_secret(account: str, token: str) -> str:
+	@staticmethod
+	def build_key(*unique_keys) -> str:
 
-	""" Retrieves a token secret given a pair account-token
+		""" Builds a hash key given a Twitter account and token
 
-	:param account: Twitter account
-	:param token: Twitter token
+		:param unique_keys: individual keys to build a combined key
 
-	"""
+		"""
 
-	key = build_key(account, token)
-	return TOKEN_SECRETS.get(key)
+		combined_key = '_'.join(unique_keys)
+		return combined_key
+
+
+
+
+	def set(self, account: str, token: str, secret: str) -> None:
+
+		""" Saves a token secret given a pair account-token
+
+		:param account: Twitter account
+		:param token: Twitter token
+		:param secret: Twitter token secret
+
+		"""
+
+		key = self.build_key(account, token)
+		self.token_secrets[key] = secret
+
+
+
+
+	def get(self, account: str, token: str) -> str:
+
+		""" Retrieves a token secret given a pair account-token
+
+		:param account: Twitter account
+		:param token: Twitter token
+
+		"""
+
+		key = self.build_key(account, token)
+		return self.token_secrets.get(key)
