@@ -2,5 +2,6 @@
 
 numpy ~= 1.16
 Flask ~= 1.0
-Flask_Cors ~= 3.0
+Flask-Cors ~= 3.0
+Flask-SocketIO ~= 3.3
 tweepy ~= 3.7

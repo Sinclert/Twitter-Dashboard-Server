@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
+import json
+import os
+
 from flask import Flask
 from flask import jsonify
 from flask import request
+
 from flask_cors import CORS
+from flask_socketio import SocketIO
 
 from handlers.secrets import SecretsHandler
 from handlers.streams import StreamsHandler
@@ -13,7 +18,11 @@ from twitter.stream import TwitterStream
 
 
 app = Flask('Twitter-Dashboards')
+app.secret_key = os.urandom(32)
+
+socket_app = SocketIO(app)
 CORS(app)
+
 
 secrets = SecretsHandler()
 streams = StreamsHandler()
@@ -74,7 +83,7 @@ def set_stream():
 	token_secret = secrets.get(account, token)
 
 	# Saving the stream for future use
-	stream = TwitterStream(token, token_secret)
+	stream = TwitterStream(token, token_secret, send_tweet)
 	streams.set(account, stream)
 
 	stream.start_stream(
@@ -88,9 +97,28 @@ def set_stream():
 
 
 
+def send_tweet(tweet: object):
+
+	"""
+	Callback that emits a tweet object to the client
+
+	:param tweet: SimpleTweet object
+	"""
+
+	with app.app_context():
+		socket_app.emit(
+			event='tweet',
+			data=json.dumps(str(tweet)),
+			namespace='/stream'
+		)
+
+
+
+
 if __name__ == '__main__':
 
-	app.run(
+	socket_app.run(
+		app=app,
 		host='127.0.0.1',
 		port=5000,
 		debug=True
