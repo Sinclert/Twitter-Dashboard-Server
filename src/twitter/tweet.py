@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from utils.geolocation import compute_center
+from utils.geolocation import fuzz_point
 
 
 all_sources = (
@@ -50,6 +51,7 @@ class SimpleTweet(object):
 
 		elif hasattr(tweet, 'place') and tweet.place is not None:
 			center = compute_center(tweet.place.bounding_box.coordinates[0])
+			center = fuzz_point(center)
 			coords['lon'] = center[0]
 			coords['lat'] = center[1]
 
