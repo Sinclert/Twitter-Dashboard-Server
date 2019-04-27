@@ -32,17 +32,6 @@ class SimpleTweet(object):
 
 
 
-	def __str__(self):
-
-		"""
-		Defines the string representation of this object
-		"""
-
-		return str(self.__dict__)
-
-
-
-
 	@staticmethod
 	def get_coords(tweet: object) -> dict:
 
@@ -107,3 +96,14 @@ class SimpleTweet(object):
 
 		else:
 			return tweet.text.lower()
+
+
+
+
+	def serialize(self):
+
+		"""
+		Returns a dictionary with all the object properties
+		"""
+
+		return self.__dict__

@@ -108,7 +108,7 @@ def send_tweet(tweet: object):
 	with app.app_context():
 		socket_app.emit(
 			event='tweet',
-			data=json.dumps(str(tweet)),
+			data=json.dumps(tweet),
 			namespace='/stream'
 		)
 

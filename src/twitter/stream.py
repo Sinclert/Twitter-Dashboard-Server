@@ -92,6 +92,8 @@ class TwitterStream(StreamListener):
 		"""
 
 		tweet = self.tweet_builder(tweet)
+		tweet = tweet.serialize()
+
 		self.tweet_callback(tweet)
 
 
