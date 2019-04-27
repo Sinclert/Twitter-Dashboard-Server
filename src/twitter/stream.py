@@ -5,6 +5,7 @@ from tweepy import StreamListener
 from tweepy import Stream
 
 from twitter.auth import get_oauth_handler
+from twitter.tweet import SimpleTweet
 
 
 
@@ -14,47 +15,24 @@ class TwitterStream(StreamListener):
 	""" Represents a Twitter Streaming object """
 
 
-	def __init__(self, token_key: str, token_secret: str) -> None:
+	def __init__(self, token: str, token_secret: str) -> None:
 
 		"""
 		Creates a Twitter listener object
 
-		:param token_key: Twitter token
+		:param token: Twitter token
 		:param token_secret: Twitter token secret
 		"""
 
 		super().__init__()
 
 		oauth_handler = get_oauth_handler()
-		oauth_handler.set_access_token(token_key, token_secret)
+		oauth_handler.set_access_token(token, token_secret)
 
 		self.api = API(oauth_handler)
 		self.stream = None
-
-		# Timeout before closing (secs)
-		self.timeout = 15
-
-
-
-
-	@staticmethod
-	def get_text(tweet: object) -> str:
-
-		"""
-		Extracts the lowercase text from a Status object (tweet)
-
-		:param tweet: Tweet object
-		"""
-
-		if hasattr(tweet, 'retweeted_status'):
-			tweet = tweet.retweeted_status
-
-		if hasattr(tweet, 'extended_tweet'):
-			tweet = tweet.extended_tweet
-			return tweet['full_text'].lower()
-
-		else:
-			return tweet.text.lower()
+		self.stream_timeout = 15
+		self.tweet_builder = SimpleTweet
 
 
 
@@ -76,7 +54,7 @@ class TwitterStream(StreamListener):
 		self.stream = Stream(
 			auth = self.api.auth,
 			listener = self,
-			timeout = self.timeout
+			timeout = self.stream_timeout
 		)
 
 		self.stream.filter(
@@ -107,8 +85,8 @@ class TwitterStream(StreamListener):
 		:param tweet: Tweet object
 		"""
 
-		tweet_text = self.get_text(tweet)
-		print(tweet_text)
+		tweet = self.tweet_builder(tweet)
+		print(tweet)
 
 
 

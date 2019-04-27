@@ -1,5 +1,6 @@
 # Package requirements
 
+numpy ~= 1.16
 Flask ~= 1.0
 Flask_Cors ~= 3.0
 tweepy ~= 3.7
