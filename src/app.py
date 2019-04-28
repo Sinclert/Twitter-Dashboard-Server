@@ -13,6 +13,8 @@ from flask_socketio import SocketIO
 from handlers.secrets import SecretsHandler
 from handlers.streams import StreamsHandler
 
+from taggers.sentiment import SentimentTagger
+
 from twitter.auth import get_oauth_handler
 from twitter.stream import TwitterStream
 
@@ -26,6 +28,7 @@ CORS(app)
 
 secrets = SecretsHandler()
 streams = StreamsHandler()
+tagger  = SentimentTagger()
 
 
 
@@ -105,13 +108,16 @@ def stop_stream():
 
 
 
-def send_tweet(tweet: object):
+def send_tweet(tweet: dict):
 
 	"""
 	Callback that emits a tweet object to the client
 
 	:param tweet: SimpleTweet object
 	"""
+
+	# Assigning a sentiment label
+	tweet['label'] = tagger.predict(tweet['text'])
 
 	with app.app_context():
 

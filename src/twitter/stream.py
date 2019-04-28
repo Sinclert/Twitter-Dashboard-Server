@@ -34,7 +34,7 @@ class TwitterStream(StreamListener):
 
 		# Stream properties
 		self.stream = None
-		self.stream_timeout = 15
+		self.stream_timeout = 30
 
 		# On status (tweet) listener functions
 		self.tweet_builder = SimpleTweet
