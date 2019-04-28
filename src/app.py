@@ -72,8 +72,8 @@ def get_auth_token():
 
 
 
-@app.route('/setStream', methods=['POST'])
-def set_stream():
+@app.route('/startStream', methods=['POST'])
+def start_stream():
 
 	# Get request arguments
 	account = request.json['twitter_account']
@@ -82,15 +82,23 @@ def set_stream():
 	# Retrieving token secret previously saved
 	token_secret = secrets.get(account, token)
 
-	# Saving the stream for future use
+	# Creates and starts the stream
 	stream = TwitterStream(token, token_secret, send_tweet)
-	streams.set(account, stream)
+	streams.start_stream(account, stream)
 
-	stream.start_stream(
-		queries=['Trump'],
-		langs=['en'],
-		coords=[-122.75, 36.8, -121.75, 37.8]
-	)
+	return '', 200
+
+
+
+
+@app.route('/stopStream', methods=['POST'])
+def stop_stream():
+
+	# Get request arguments
+	account = request.json['twitter_account']
+
+	# Stops the stream
+	streams.stop_stream(account)
 
 	return '', 200
 
@@ -106,6 +114,7 @@ def send_tweet(tweet: object):
 	"""
 
 	with app.app_context():
+
 		socket_app.emit(
 			event='tweet',
 			data=json.dumps(tweet),

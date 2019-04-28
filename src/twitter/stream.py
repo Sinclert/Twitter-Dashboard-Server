@@ -43,7 +43,7 @@ class TwitterStream(StreamListener):
 
 
 
-	def start_stream(self, queries: list, langs: list, coords: list) -> None:
+	def start(self, queries: list, langs: list, coords: list) -> None:
 
 		"""
 		Starts the Twitter stream
@@ -73,7 +73,7 @@ class TwitterStream(StreamListener):
 
 
 
-	def stop_stream(self) -> None:
+	def stop(self) -> None:
 
 		""" Closes the Twitter stream """
 
@@ -104,7 +104,7 @@ class TwitterStream(StreamListener):
 		""" Finish stream due to the timeout exception """
 
 		print('Timeout exception due to lack of data')
-		self.stop_stream()
+		self.stop()
 
 
 

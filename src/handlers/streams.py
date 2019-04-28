@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from twitter.stream import TwitterStream
+
 from utils.singleton import Singleton
 
 
@@ -33,6 +35,20 @@ class StreamsHandler(metaclass=Singleton):
 
 
 
+	def get(self, account: str) -> TwitterStream:
+
+		"""
+		Retrieves a Twitter stream given a pair account-token
+
+		:param account: Twitter account
+		"""
+
+		key = self.build_key(account)
+		return self.streams.get(key)
+
+
+
+
 	def set(self, account: str, stream: object) -> None:
 
 		"""
@@ -43,23 +59,44 @@ class StreamsHandler(metaclass=Singleton):
 		"""
 
 		key = self.build_key(account)
-
-		# Stopping previous stream in case it existed
-		if key in self.streams:
-			self.streams[key].stop_stream()
-
 		self.streams[key] = stream
 
 
 
 
-	def get(self, account: str) -> object:
+	def start_stream(self, account: str, stream: TwitterStream) -> None:
 
 		"""
-		Retrieves a Twitter stream given a pair account-token
+		Starts a Twitter stream given an account
+
+		:param account: Twitter account
+		:param stream: Twitter stream object
+		"""
+
+		# Stopping previous stream in case it existed
+		self.stop_stream(account)
+
+		self.set(account, stream)
+		stream.start(
+			queries=['Trump'],
+			langs=['en'],
+			coords=[-122.75, 36.8, -121.75, 37.8]
+		)
+
+
+
+
+	def stop_stream(self, account: str) -> None:
+
+		"""
+		Stops a Twitter stream given an account
 
 		:param account: Twitter account
 		"""
 
-		key = self.build_key(account)
-		return self.streams.get(key)
+		stream = self.get(account)
+
+		if stream is not None:
+			stream.stop()
+
+		self.set(account, None)
