@@ -2,19 +2,14 @@
 
 import json
 import os
-
 from flask import Flask
 from flask import jsonify
 from flask import request
-
 from flask_cors import CORS
 from flask_socketio import SocketIO
-
 from handlers.secrets import SecretsHandler
 from handlers.streams import StreamsHandler
-
 from taggers.sentiment import SentimentTagger
-
 from twitter.auth import get_oauth_handler
 from twitter.stream import TwitterStream
 
@@ -24,11 +19,6 @@ app.secret_key = os.urandom(32)
 
 socket_app = SocketIO(app)
 CORS(app)
-
-
-secrets = SecretsHandler()
-streams = StreamsHandler()
-tagger  = SentimentTagger()
 
 
 
@@ -131,6 +121,10 @@ def send_tweet(tweet: dict):
 
 
 if __name__ == '__main__':
+
+	secrets = SecretsHandler()
+	streams = StreamsHandler()
+	tagger = SentimentTagger()
 
 	socket_app.run(
 		app=app,

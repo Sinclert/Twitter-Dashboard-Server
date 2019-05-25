@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from twitter.stream import TwitterStream
-
 from utils.singleton import Singleton
 
 

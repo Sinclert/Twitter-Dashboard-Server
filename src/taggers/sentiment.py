@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import random
-
 from utils.singleton import Singleton
 
 

@@ -3,7 +3,6 @@
 from tweepy import API
 from tweepy import StreamListener
 from tweepy import Stream
-
 from twitter.auth import get_oauth_handler
 from twitter.tweet import SimpleTweet
 
