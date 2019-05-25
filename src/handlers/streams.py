@@ -38,7 +38,7 @@ class StreamsHandler(metaclass=Singleton):
 	def get(self, account: str) -> TwitterStream:
 
 		"""
-		Retrieves a Twitter stream given a pair account-token
+		Retrieves a Twitter stream given an account
 
 		:param account: Twitter account
 		"""
@@ -52,7 +52,7 @@ class StreamsHandler(metaclass=Singleton):
 	def set(self, account: str, stream: object) -> None:
 
 		"""
-		Saves a Twitter stream given a pair account-token
+		Saves a Twitter stream given an account
 
 		:param account: Twitter account
 		:param stream: Twitter stream object

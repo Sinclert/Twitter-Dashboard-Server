@@ -111,7 +111,7 @@ def stop_stream():
 def send_tweet(tweet: dict):
 
 	"""
-	Callback that emits a tweet object to the client
+	Callback that sends a tweet object to the client
 
 	:param tweet: SimpleTweet object
 	"""
@@ -121,9 +121,9 @@ def send_tweet(tweet: dict):
 
 	with app.app_context():
 
-		socket_app.emit(
-			event='tweet',
+		socket_app.send(
 			data=json.dumps(tweet),
+		    json=True,
 			namespace='/stream'
 		)
 
