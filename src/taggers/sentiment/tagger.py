@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import random
+from taggers.clf_hierarchy import HierarchicalClassif
 from utils.singleton import Singleton
-
-
-all_labels = (
-	'positive',
-	'negative',
-	'neutral'
-)
 
 
 
@@ -20,15 +13,14 @@ class SentimentTagger(metaclass=Singleton):
 
 	def __init__(self):
 
-		"""
-		Loads the necessary classifiers to assign the label
-		"""
+		""" Loads the necessary classifiers to assign the label """
+
+		self.classifier = HierarchicalClassif('sentiment')
 
 
 
 
-	@staticmethod
-	def predict(text):
+	def predict(self, text) -> str:
 
 		"""
 		Predicts a sentiment label given a text
@@ -36,4 +28,4 @@ class SentimentTagger(metaclass=Singleton):
 		:param text: comment to predict
 		"""
 
-		return random.choice(all_labels)
+		return self.classifier.predict(text)
