@@ -6,7 +6,7 @@ import pickle
 
 
 file_folders = {
-	'sentiment': ['taggers', 'sentiment'],
+	'sentiment': ['src', 'taggers', 'sentiment'],
 }
 
 file_types = {
