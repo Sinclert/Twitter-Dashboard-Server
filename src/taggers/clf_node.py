@@ -11,18 +11,24 @@ class NodeClassif(object):
 	""" Represents a hierarchical node classifier """
 
 
-	def __init__(self, file_name: str):
+	def __init__(self, f_folder: str, f_name: str):
 
 		"""
 		Loads a trained model if specified
 
-		:param file_name: saved model file name
+		:param f_folder: saved model file folder
+		:param f_name: saved model file name
 		"""
 
 		self.model = None
 		self.selector = None
 		self.vectorizer = None
-		self.__dict__ = load_object(file_name, 'model')
+
+		self.__dict__ = load_object(
+			f_folder=f_folder,
+			f_type='model',
+			f_name=f_name
+		)
 
 
 
