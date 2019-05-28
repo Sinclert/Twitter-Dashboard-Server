@@ -1,0 +1,18 @@
+{
+	"tree": {
+		"clf_file": "subjectivity.pickle",
+		"clf_object": null,
+		"clf_children": {
+			"polarized": {
+				"clf_file": "sentiment.pickle",
+				"clf_object": null,
+				"clf_children": {}
+			}
+		}
+	},
+	"labels": [
+		"neutral",
+		"negative",
+		"positive"
+	]
+}
