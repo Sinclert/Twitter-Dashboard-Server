@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pickle
-from taggers.sentiment.text_tokenizer import TextTokenizer
+from taggers.sentiment.custom import TextTokenizer
 
 
 
