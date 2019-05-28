@@ -2,7 +2,7 @@
 
 import json
 import os
-import pickle
+from taggers.custom_pickle import CustomUnpickler
 
 
 file_folders = {
@@ -57,7 +57,7 @@ def load_object(f_folder: str, f_type: str, f_name: str) -> dict:
 
 	try:
 		file = open(path, 'rb')
-		obj = pickle.load(file)
+		obj = CustomUnpickler(file).load()
 		file.close()
 
 		return obj
