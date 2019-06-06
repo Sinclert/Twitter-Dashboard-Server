@@ -4,7 +4,7 @@ from utils.geolocation import compute_center
 from utils.geolocation import fuzz_point
 
 
-all_sources = (
+known_sources = (
 	'android',
 	'iphone',
 	'web'
@@ -71,7 +71,7 @@ class SimpleTweet(object):
 
 		if hasattr(tweet, 'source'):
 
-			for source in all_sources:
+			for source in known_sources:
 				if source in tweet.source.lower():
 					return source
 			else:

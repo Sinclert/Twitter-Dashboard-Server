@@ -14,7 +14,7 @@ class TwitterStream(StreamListener):
 	""" Represents a Twitter Streaming object """
 
 
-	def __init__(self, token: str, token_secret: str, callback: callable) -> None:
+	def __init__(self, token: str, token_secret: str, callback: callable):
 
 		"""
 		Creates a Twitter listener object
@@ -33,6 +33,7 @@ class TwitterStream(StreamListener):
 
 		# Stream properties
 		self.stream = None
+		self.stream_filter = ''
 		self.stream_timeout = 30
 
 		# On status (tweet) listener functions
@@ -42,18 +43,38 @@ class TwitterStream(StreamListener):
 
 
 
-	def start(self, langs: list, coords: list) -> None:
+	def __filter(self, tweet: SimpleTweet):
+
+		"""
+		Filters the tweet if it does not contain the filter term
+
+		:param tweet: Tweet object
+		"""
+
+		if self.stream_filter in tweet.text:
+			return tweet
+		else:
+			return None
+
+
+
+
+	def start(self, filter_term: str, filter_langs: tuple, filter_coords: tuple):
 
 		"""
 		Starts the Twitter stream
 
-		:param langs: filter languages
-		:param coords: filter coordinates in groups of 4
+		:param filter_term: filter word
+		:param filter_langs: filter languages
+		:param filter_coords: filter coordinates in groups of 4
 			1. South-West longitude
 			2. South-West latitude
 			3. North-East longitude
 			4. North-East latitude
 		"""
+
+		# The stream filter term must be set first
+		self.stream_filter = filter_term
 
 		self.stream = Stream(
 			auth = self.api.auth,
@@ -62,15 +83,15 @@ class TwitterStream(StreamListener):
 		)
 
 		self.stream.filter(
-			languages = langs,
-			locations = coords,
+			languages = filter_langs,
+			locations = filter_coords,
 			is_async = True
 		)
 
 
 
 
-	def stop(self) -> None:
+	def stop(self):
 
 		""" Closes the Twitter stream """
 
@@ -80,7 +101,7 @@ class TwitterStream(StreamListener):
 
 
 
-	def on_status(self, tweet: object) -> None:
+	def on_status(self, tweet: object):
 
 		"""
 		Processes received tweet and executes callback
@@ -89,14 +110,16 @@ class TwitterStream(StreamListener):
 		"""
 
 		tweet = self.tweet_builder(tweet)
-		tweet = tweet.serialize()
+		tweet = self.__filter(tweet)
 
-		self.tweet_callback(tweet)
+		if type(tweet) == SimpleTweet:
+			tweet = tweet.serialize()
+			self.tweet_callback(tweet)
 
 
 
 
-	def on_exception(self, exception: Exception) -> None:
+	def on_exception(self, exception: Exception):
 
 		""" Finish stream due to the timeout exception """
 
@@ -106,7 +129,7 @@ class TwitterStream(StreamListener):
 
 
 
-	def on_error(self, code: int) -> None:
+	def on_error(self, code: int):
 
 		"""
 		Error listener which prints error code

@@ -77,8 +77,9 @@ class StreamsHandler(metaclass=Singleton):
 
 		self.set(account, stream)
 		stream.start(
-			langs=['en'],
-			coords=[-122.75, 36.8, -121.75, 37.8]
+			filter_term='',
+			filter_langs=('en',),
+			filter_coords=(-122.75, 36.8, -121.75, 37.8)
 		)
 
 
