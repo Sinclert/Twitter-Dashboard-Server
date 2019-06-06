@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 from tweepy import API
 from tweepy import StreamListener
 from tweepy import Stream
@@ -33,7 +34,7 @@ class TwitterStream(StreamListener):
 
 		# Stream properties
 		self.stream = None
-		self.stream_filter = ''
+		self.stream_filter = None
 		self.stream_timeout = 30
 
 		# On status (tweet) listener functions
@@ -51,7 +52,7 @@ class TwitterStream(StreamListener):
 		:param tweet: Tweet object
 		"""
 
-		if self.stream_filter in tweet.text:
+		if re.search(self.stream_filter, tweet.text) is not None:
 			return tweet
 		else:
 			return None
@@ -74,7 +75,7 @@ class TwitterStream(StreamListener):
 		"""
 
 		# The stream filter term must be set first
-		self.stream_filter = filter_term
+		self.stream_filter = '(^|\s)' + filter_term + '(\s|$)'
 
 		self.stream = Stream(
 			auth = self.api.auth,
