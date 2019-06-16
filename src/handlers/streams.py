@@ -63,13 +63,16 @@ class StreamsHandler(metaclass=Singleton):
 
 
 
-	def start_stream(self, account: str, stream: TwitterStream) -> None:
+	def start_stream(self, account: str, stream: TwitterStream, stream_props: dict) -> None:
 
 		"""
 		Starts a Twitter stream given an account
 
 		:param account: Twitter account
 		:param stream: Twitter stream object
+		:param stream_props: Twitter stream start parameters:
+			1. Filter term
+			2. Filter coords
 		"""
 
 		# Stopping previous stream in case it existed
@@ -77,9 +80,10 @@ class StreamsHandler(metaclass=Singleton):
 
 		self.set(account, stream)
 		stream.start(
-			filter_term='the',
-			filter_langs=('en',),
-			filter_coords=(-122.75, 36.8, -121.75, 37.8)
+			filter_term=stream_props['filter_term'],
+			#filter_coords=stream_props['filter_coords'],
+			filter_coords=(-74,40,-73,41),
+			filter_langs = ('en',),
 		)
 
 

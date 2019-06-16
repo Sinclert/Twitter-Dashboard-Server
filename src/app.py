@@ -69,15 +69,27 @@ def get_auth_token():
 def start_stream():
 
 	# Get request arguments
-	account = request.json['twitter_account']
-	token = request.json['twitter_token']
+	tw_account  = request.json['twitter_account']
+	tw_token    = request.json['twitter_token']
+	stream_word = request.json['filterWord']
+	stream_loc  = request.json['location']
+
+	# TODO: Transform location into coordinates
+	stream_coords = stream_loc
 
 	# Retrieving token secret previously saved
-	token_secret = secrets.get(account, token)
+	token_secret = secrets.get(tw_account, tw_token)
 
 	# Creates and starts the stream
-	stream = TwitterStream(token, token_secret, send_tweet)
-	streams.start_stream(account, stream)
+	stream = TwitterStream(tw_token, token_secret, send_tweet)
+	streams.start_stream(
+		account=tw_account,
+		stream=stream,
+		stream_props={
+			'filter_term':   stream_word,
+			'filter_coords': stream_coords,
+		},
+	)
 
 	return '', 200
 
@@ -88,10 +100,10 @@ def start_stream():
 def stop_stream():
 
 	# Get request arguments
-	account = request.json['twitter_account']
+	tw_account = request.json['twitter_account']
 
 	# Stops the stream
-	streams.stop_stream(account)
+	streams.stop_stream(tw_account)
 
 	return '', 200
 

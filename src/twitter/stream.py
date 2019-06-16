@@ -60,18 +60,18 @@ class TwitterStream(StreamListener):
 
 
 
-	def start(self, filter_term: str, filter_langs: tuple, filter_coords: tuple):
+	def start(self, filter_term: str, filter_coords: tuple, filter_langs: tuple):
 
 		"""
 		Starts the Twitter stream
 
 		:param filter_term: filter word
-		:param filter_langs: filter languages
 		:param filter_coords: filter coordinates in groups of 4
 			1. South-West longitude
 			2. South-West latitude
 			3. North-East longitude
 			4. North-East latitude
+		:param filter_langs: filter languages
 		"""
 
 		# The stream filter term must be set first
@@ -84,8 +84,8 @@ class TwitterStream(StreamListener):
 		)
 
 		self.stream.filter(
-			languages = filter_langs,
-			locations = filter_coords,
+			locations=filter_coords,
+			languages=filter_langs,
 			is_async = True
 		)
 
