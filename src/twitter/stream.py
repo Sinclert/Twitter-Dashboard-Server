@@ -74,8 +74,11 @@ class TwitterStream(StreamListener):
 		:param filter_langs: filter languages
 		"""
 
-		# The stream filter term must be set first
-		self.stream_filter = '(^|\s)' + filter_term + '(\s|$)'
+		# If no filter term is specified: everything is valid
+		if filter_term is None or filter_term == '':
+			self.stream_filter = '.*'
+		else:
+			self.stream_filter = '(^|\s)' + filter_term + '(\s|$)'
 
 		self.stream = Stream(
 			auth = self.api.auth,
