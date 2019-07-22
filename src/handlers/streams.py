@@ -71,8 +71,8 @@ class StreamsHandler(metaclass=Singleton):
 		:param account: Twitter account
 		:param stream: Twitter stream object
 		:param stream_props: Twitter stream start parameters:
-			1. Filter term
-			2. Filter coords
+			1. Filter term (i.e: 'Golden gate')
+			2. Filter coords (i.e: [-74,40,-73,41])
 		"""
 
 		# Stopping previous stream in case it existed
@@ -81,9 +81,8 @@ class StreamsHandler(metaclass=Singleton):
 		self.set(account, stream)
 		stream.start(
 			filter_term=stream_props['filter_term'],
-			#filter_coords=stream_props['filter_coords'],
-			filter_coords=(-74,40,-73,41),
-			filter_langs = ('en',),
+			filter_coords=stream_props['filter_coords'],
+			filter_langs=('en',),
 		)
 
 

@@ -2,6 +2,9 @@
 
 import numpy
 import random
+import requests
+from config import KEYS
+from typing import Union
 
 
 fuzz_margin = 0.02
@@ -43,3 +46,40 @@ def fuzz_point(coords: list) -> list:
 	new_lat = coords[1] + lat_fuzz - fuzz_margin
 
 	return [new_lon, new_lat]
+
+
+
+
+def region_to_coords(region: str) -> Union[list, None]:
+
+	"""
+	Obtains the region coordinates from the geocoding API response
+
+	:param region: natural language region description
+	"""
+
+
+	# Obtaining basic data to perform the request
+	geocoding_key = KEYS['geocoding_key']
+	geocoding_url = KEYS['geocoding_url']
+	geocoding_params = {"address": region, "key": geocoding_key}
+
+	# Performing the request to Google geocoding API
+	response = requests.get(url = geocoding_url, params = geocoding_params)
+	response = response.json()
+
+	# In case of being valid: get the coordinates
+	if response['status'] == 'OK':
+
+		# Get the coordinates of the specified region
+		geometry = response['results'][0]['geometry']['viewport']
+		return [
+			geometry['southwest']['lng'],
+		    geometry['southwest']['lat'],
+		    geometry['northeast']['lng'],
+		    geometry['northeast']['lat']
+		]
+
+	# In case of not being valid
+	else:
+		return None

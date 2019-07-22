@@ -4,4 +4,5 @@ numpy ~= 1.16
 Flask ~= 1.0
 Flask-Cors ~= 3.0
 Flask-SocketIO ~= 3.3
+requests ~= 2.21
 tweepy ~= 3.7

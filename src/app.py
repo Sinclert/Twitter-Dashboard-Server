@@ -12,6 +12,7 @@ from handlers.streams import StreamsHandler
 from taggers.sentiment.tagger import SentimentTagger
 from twitter.auth import get_oauth_handler
 from twitter.stream import TwitterStream
+from utils.geolocation import region_to_coords
 
 
 app = Flask('Twitter-Dashboards')
@@ -74,8 +75,7 @@ def start_stream():
 	stream_word = request.json['filterWord']
 	stream_loc  = request.json['location']
 
-	# TODO: Transform location into coordinates
-	stream_coords = stream_loc
+	stream_coords = region_to_coords(stream_loc)
 
 	# Retrieving token secret previously saved
 	token_secret = secrets.get(tw_account, tw_token)
