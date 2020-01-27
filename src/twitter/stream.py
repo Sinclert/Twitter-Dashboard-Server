@@ -81,15 +81,15 @@ class TwitterStream(StreamListener):
 			self.stream_filter = '(^|\s)' + filter_term + '(\s|$)'
 
 		self.stream = Stream(
-			auth = self.api.auth,
-			listener = self,
-			timeout = self.stream_timeout
+			auth=self.api.auth,
+			listener=self,
+			timeout=self.stream_timeout
 		)
 
 		self.stream.filter(
 			locations=filter_coords,
 			languages=filter_langs,
-			is_async = True
+			is_async=True
 		)
 
 

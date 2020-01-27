@@ -48,7 +48,7 @@ def get_auth_token():
 	oauth_handler = get_oauth_handler()
 	oauth_handler.request_token = {
 		'oauth_token': oauth_token,
-	    'oauth_token_secret': oauth_verifier
+		'oauth_token_secret': oauth_verifier
 	}
 
 	# Obtaining authentication account and token
@@ -125,7 +125,7 @@ def send_tweet(tweet: dict):
 
 		socket_app.send(
 			data=json.dumps(tweet),
-		    json=True,
+			json=True,
 			namespace='/stream'
 		)
 
